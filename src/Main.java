@@ -1,19 +1,28 @@
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
 
-        String path = "C:\\Users\\FORMULA\\IdeaProjects\\SimpleCalculator\\out\\toCalculate.txt";
+        final String path = "C:\\Users\\FORMULA\\IdeaProjects\\SimpleCalculator\\out\\";
+        String readPath = path + "toCalculate.txt";
+        String writePath  = path + "answer.txt";
 
-        File inputFile = new File(path);
+
+        File inputFile = new File(readPath);
+        File outputFile = new File(writePath);
         Scanner sc = new Scanner(inputFile);
-
         String str = sc.nextLine();
-
         sc.close();
+        if (!outputFile.exists()) outputFile.createNewFile();
+        else System.out.println("File exists");
+        PrintWriter pw = new PrintWriter(outputFile);
+
+
         String [] symbols = str.split(" ");
         double a = 0.0;
         double b = 0.0;
@@ -24,6 +33,7 @@ public class Main {
             b = Double.valueOf(symbols[2]);
         } catch (NumberFormatException e) {
             System.out.println("Error! Not number");
+            pw.println("Error! Not number");
             wasException = true;
         }
 
@@ -45,6 +55,7 @@ public class Main {
 
             } catch (ArithmeticException e) {
                 System.out.println("Operation Error!");
+                pw.println("Operation Error!");
                 wasException = true;
             }
         }
@@ -55,6 +66,7 @@ public class Main {
                 }
             } catch (ArithmeticException e) {
                 System.out.println("Error! Division by zero");
+                pw.println("Error! Division by zero");
                 wasException = true;
             }
         }
@@ -80,6 +92,12 @@ public class Main {
                }
            }
            System.out.println(result);
+           pw.println(result);
+
+
+
        }
+        pw.flush();
+        pw.close();
     }
 }
